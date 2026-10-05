@@ -5,14 +5,13 @@ on:
 
 jobs:
   build:
-    runs-on: ubuntu-latest
-    # Uruchomienie budowania bezpośrednio w oficjalnym kontenerze ESP-IDF
+    runs-on: ubuntu-24.04
     container:
       image: espressif/idf:v5.1
 
     steps:
       - name: Checkout repository
-        uses: actions/checkout@v4
+        uses: actions/checkout@v4.2.2
         with:
           submodules: 'recursive'
 
@@ -26,7 +25,7 @@ jobs:
                  build esptool_py merge_bin
 
       - name: Upload Merged Binary
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v4.6.1
         with:
           name: esp32s3-firmware-merged
           path: build-s3/merged-firmware.bin
