@@ -7,7 +7,7 @@ jobs:
   build:
     runs-on: ubuntu-24.04
     container:
-      image: espressif/idf:v5.1.2
+      image: espressif/idf:v5.2.2
 
     steps:
       - name: Checkout repository with submodules
@@ -23,7 +23,6 @@ jobs:
           git config --global --add safe.directory '*'
           git submodule update --init --recursive
           
-          # Kompilacja pod dedykowaną wersją IDF 5.1.2
           idf.py -B build-s3 \
                  -DIDF_TARGET=esp32s3 \
                  -DSDKCONFIG=sdkconfig.s3 \
