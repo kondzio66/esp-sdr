@@ -7,7 +7,7 @@ jobs:
   build:
     runs-on: ubuntu-24.04
     container:
-      image: espressif/idf:v5.4
+      image: espressif/idf:v5.1.2
 
     steps:
       - name: Checkout repository with submodules
@@ -23,20 +23,12 @@ jobs:
           git config --global --add safe.directory '*'
           git submodule update --init --recursive
           
+          # Kompilacja pod dedykowaną wersją IDF 5.1.2
           idf.py -B build-s3 \
                  -DIDF_TARGET=esp32s3 \
                  -DSDKCONFIG=sdkconfig.s3 \
                  -DSDKCONFIG_DEFAULTS=sdkconfig.defaults.esp32s3 \
                  build esptool_py merge_bin
-
-      # Ten krok uruchomi się TYLKO jeśli kompilacja powyżej się nie powiedzie
-      - name: Print Build Logs on Failure
-        if: failure()
-        run: |
-          echo "=== IDF STDERR LOG ==="
-          cat build-s3/log/idf_py_stderr_output_* || true
-          echo "=== IDF STDOUT LOG (LAST 100 LINES) ==="
-          tail -n 100 build-s3/log/idf_py_stdout_output_* || true
 
       - name: Upload Merged Binary
         uses: actions/upload-artifact@v4.6.1
