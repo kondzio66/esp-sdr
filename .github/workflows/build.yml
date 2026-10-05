@@ -1,0 +1,27 @@
+name: Build ESP32-S3 Firmware
+
+on:
+  workflow_dispatch: # Pozwala uruchomić kompilację ręcznie jednym przyciskiem
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          submodules: 'recursive'
+
+      - name: Build with ESP-IDF
+        uses: espressif/esp-idf-ci-action@v1
+        with:
+          esp_idf_version: 'v5.1'
+          target: 'esp32s3'
+          path: '.'
+          command: 'idf.py -B build-s3 -DIDF_TARGET=esp32s3 -DSDKCONFIG=sdkconfig.s3 -DSDKCONFIG_DEFAULTS=sdkconfig.defaults.esp32s3 build'
+
+      - name: Upload Artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: esp32s3-firmware
+          path: build-s3/*.bin
