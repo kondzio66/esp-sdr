@@ -20,6 +20,10 @@ jobs:
         run: |
           . /opt/esp/idf/export.sh
           
+          # Oznaczenie katalogu jako bezpiecznego dla Gita wewnątrz kontenera
+          git config --global --add safe.directory /__w/esp-sdr/esp-sdr
+          git config --global --add safe.directory '*'
+          
           git submodule update --init --recursive
           
           idf.py -B build-s3 \
